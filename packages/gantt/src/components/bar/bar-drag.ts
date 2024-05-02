@@ -15,7 +15,6 @@ import {
     isPointerNearClientRect,
     getAutoScrollSpeedRates
 } from '../../utils/drag-scroll';
-import { GanttViewType } from 'ngx-gantt';
 
 /**
  * Proximity, as a ratio to width/height, at which a
@@ -365,7 +364,7 @@ export class GanttBarDrag implements OnDestroy {
         let start = currentDate;
         let end = currentDate.add(diffs, this.ganttUpper.view?.options?.datePrecisionUnit);
 
-        if (this.ganttUpper.view.viewType === GanttViewType.day) {
+        if (this.ganttUpper.view.viewType === 'day') {
             const dayWidth = this.ganttUpper.view.getDayOccupancyWidth(currentDate);
             if (currentX > currentStartX + dayWidth / 2) {
                 start = start.addDays(1);
