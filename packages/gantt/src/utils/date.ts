@@ -61,11 +61,14 @@ export {
     isWeekend,
     getWeek,
     isToday,
+    differenceInMinutes,
+    differenceInHours,
     differenceInDays,
     differenceInCalendarQuarters,
     eachMonthOfInterval,
     eachWeekOfInterval,
-    eachDayOfInterval
+    eachDayOfInterval,
+    eachHourOfInterval
 } from 'date-fns';
 
 export type GanttDateUtil = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';

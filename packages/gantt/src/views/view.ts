@@ -1,4 +1,11 @@
-import { GanttDate, differenceInDays, GanttDateUtil } from '../utils/date';
+import {
+    GanttDate,
+    differenceInDays,
+    GanttDateUtil,
+    differenceInMinutes,
+    differenceInCalendarDays,
+    differenceInHours
+} from '../utils/date';
 import { GanttDatePoint } from '../class/date-point';
 import { BehaviorSubject } from 'rxjs';
 import { defaultConfig, GanttDateFormat } from '../gantt.config';
@@ -93,6 +100,17 @@ export abstract class GanttView {
 
     // 获取二级时间点（坐标，显示名称）
     abstract getSecondaryDatePoints(): GanttDatePoint[];
+
+    differenceByPrecisionUnit(dateLeft: GanttDate, dateRight: GanttDate) {
+        switch (this.options.datePrecisionUnit) {
+            case 'minute':
+                return differenceInMinutes(dateLeft.value, dateRight.value);
+            case 'hour':
+                return differenceInHours(dateLeft.value, dateRight.value);
+            default:
+                return differenceInCalendarDays(dateLeft.value, dateRight.value);
+        }
+    }
 
     protected getDateIntervalWidth(start: GanttDate, end: GanttDate) {
         let result = 0;
@@ -192,5 +210,17 @@ export abstract class GanttView {
     getDateRangeWidth(start: GanttDate, end: GanttDate) {
         // addSeconds(1) 是因为计算相差天会以一个整天来计算 end时间一般是59分59秒不是一个整天，所以需要加1
         return this.getDateIntervalWidth(start, end.addSeconds(1));
+    }
+
+    // 根据日期精度获取最小时间范围的宽度
+    getMinRangeWidthByPrecisionUnit(date: GanttDate) {
+        switch (this.options.datePrecisionUnit) {
+            case 'minute':
+                return this.getDayOccupancyWidth(date) / 24 / 60;
+            case 'hour':
+                return this.getDayOccupancyWidth(date) / 24;
+            default:
+                return this.getDayOccupancyWidth(date);
+        }
     }
 }
